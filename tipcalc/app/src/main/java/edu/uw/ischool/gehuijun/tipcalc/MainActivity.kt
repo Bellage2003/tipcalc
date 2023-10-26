@@ -7,7 +7,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.Spinner
+import android.text.InputFilter
+import android.text.Spanned
 import androidx.appcompat.app.AppCompatActivity
+
+class DecimalDigitsInputFilter(maxDigitsBeforeDecimal: Int, maxDigitsAfterDecimal: Int) : InputFilter {
+    private val pattern = Regex("^\\d{0,$maxDigitsBeforeDecimal}(\\.\\d{0,$maxDigitsAfterDecimal})?$")
+
+    override fun filter(source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int): CharSequence? {
+        val newInput = dest.toString().substring(0, dstart) + source?.subSequence(start, end) + dest.toString().substring(dend)
+        return if (pattern.matches(newInput)) null else ""
+    }
+}
 
 class MainActivity : AppCompatActivity() {
     private lateinit var amountEditText: EditText
@@ -22,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         tipButton = findViewById(R.id.tipButton)
         tipSpinner = findViewById(R.id.tipSpinner)
 
+        amountEditText.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
         tipButton.isEnabled = false
 
         amountEditText.addTextChangedListener(object : TextWatcher {

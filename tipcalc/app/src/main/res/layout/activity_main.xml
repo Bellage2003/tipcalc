@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"
-        android:padding="60dp" />
+        android:padding="60dp"/>
 
     <Spinner
         android:id="@+id/tipSpinner"
